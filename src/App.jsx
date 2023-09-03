@@ -13,9 +13,9 @@ function App() {
     <HashRouter>
       <div className="container">
         <Routes>
-          <Route path="/auth" element={<Auth />}>
+          <Route path="/" element={<Auth />}>
             <Route path="register" element={<Register />} />
-            <Route path="login" element={<Login />} />
+            <Route path="" element={<Login />} />
           </Route>
           <Route path="/todo" element={<Todo />} />
         </Routes>

@@ -28,7 +28,7 @@ function Todo() {
         });
         getTodos();
       } catch (err) {
-        navigate("/auth/login");
+        navigate("/");
         console.log(err);
       }
     })();
@@ -168,7 +168,7 @@ function Todo() {
           }
         );
         console.log(res.data);
-        navigate("/auth/login");
+        navigate("/");
       } catch (err) {
         console.log(err.response);
       }
@@ -233,6 +233,7 @@ function Todo() {
             </ul>
             <div className="todoList_items">
               <ul className="todoList_item">
+                {todos.length < 1 ? <p className="text-danger text-center">目前尚無待辦事項</p>: ''}
                 {showTodos.map((item) => (
                   <li key={item.id}>
                     <label className="todoList_label">

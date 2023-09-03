@@ -36,7 +36,7 @@ const inputList = [
 
 function Register() {
   const navigate = useNavigate();
-  const [errorMSG, setErrorMSG] = useState([]);
+  const [errorMSG, setErrorMSG] = useState('');
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -48,17 +48,20 @@ function Register() {
   };
 
   const handleSignUp = () => {
-    setErrorMSG([]);
+    setErrorMSG('');
     console.log(111, form);
     if (form.password != form.checkPassword) {
-      setErrorMSG(["密碼錯誤"]);
+      setErrorMSG("密碼錯誤");
       return;
     }
     (async () => {
       try {
-        const res = await axios.post(`${VITE_APP_HOST}/users/sign_up`, form);
+        const {data} = await axios.post(`${VITE_APP_HOST}/users/sign_up`, form);
         console.log(res);
-        navigate("/auth/login");
+        navigate("/");
+        if(!data.status) {
+          setErrorMSG(data.message)
+        }
       } catch (err) {
         console.log(err);
         setErrorMSG(err.response.data.message);
@@ -84,12 +87,9 @@ function Register() {
           />
         </div>
       ))}
-
-      {errorMSG.map((err) => (
         <p id="err" className="text-danger">
-          {err}
+          {errorMSG}
         </p>
-      ))}
       <input
         type="button"
         value="Sign up"

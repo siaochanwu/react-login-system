@@ -44,6 +44,8 @@ function Login() {
           const { token } = data;
           document.cookie = `token=${token};`;
           navigate("/todo");
+        } else {
+          setErrorMSG(data.message)
         }
       } catch (err) {
         console.log(err.response.data.message);
@@ -82,7 +84,7 @@ function Login() {
         onClick={handleSignin}
         value="登入"
       ></input>
-      <NavLink className="formControls_btnLink" to="/auth/register">
+      <NavLink className="formControls_btnLink" to="/register">
         註冊帳號
       </NavLink>
     </form>
