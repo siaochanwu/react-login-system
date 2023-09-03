@@ -271,8 +271,8 @@ function Todo() {
               <div className="todoList_statistics">
                 <p>
                   {" "}
-                  {todos.filter((item) => item.status == true).length}{" "}
-                  個已完成項目
+                  {todos.filter((item) => item.status == false).length}{" "}
+                  個待完成項目
                 </p>
                 <span onClick={handleCleatDone}>清除已完成項目</span>
               </div>
