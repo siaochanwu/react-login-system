@@ -79,7 +79,7 @@ function Login() {
       </p>
 
       <input
-        className="formControls_btnSubmit"
+        className="formControls_btnSubmit pe-auto"
         type="button"
         onClick={handleSignin}
         value="登入"

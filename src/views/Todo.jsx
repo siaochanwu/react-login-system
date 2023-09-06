@@ -12,6 +12,7 @@ function Todo() {
   const [filter, setFilter] = useState("");
   const [editID, setEditID] = useState("");
   const [editContent, setEditContent] = useState("");
+  const [nickname, setNickname] = useState("");
 
   const cookieValue = document.cookie
     .split("; ")
@@ -26,6 +27,8 @@ function Todo() {
             Authorization: cookieValue,
           },
         });
+        console.log(res.data);
+        setNickname(res.data.nickname);
         getTodos();
       } catch (err) {
         navigate("/");
@@ -82,6 +85,7 @@ function Todo() {
         );
         console.log("addtodo", data);
         setNewTodo("");
+        setFilter("all");
         getTodos();
       } catch (err) {
         console.log(err);
@@ -176,11 +180,20 @@ function Todo() {
   };
 
   const handleCleatDone = async () => {
+    if (todos.length < 1) {
+      alert("目前並無已完成待辦");
+    }
     todos.map((item) => {
       if (item.status) {
         handleDeleteTodo(item.id);
       }
     });
+  };
+
+  const handleKeypress = (e) => {
+    if (e.keyCode === 13) {
+      handleAddTodo();
+    }
   };
 
   return (
@@ -189,11 +202,11 @@ function Todo() {
         <h1>ONLINE TODO LIST</h1>
         <ul>
           <li className="todo_sm">
-            <span className="p-4">Wendy的代辦</span>
+            <span className="p-4">{nickname}的代辦</span>
           </li>
           <li>
             <MdLogout
-              style={{ width: "20px", height: "20px" }}
+              style={{ width: "20px", height: "20px", cursor: "pointer" }}
               onClick={handleSignout}
             />
           </li>
@@ -206,10 +219,11 @@ function Todo() {
               type="text"
               placeholder="請輸入待辦事項"
               onChange={(e) => setNewTodo(e.target.value)}
+              onKeyDown={handleKeypress}
               value={newTodo}
             ></input>
             <MdAddBox
-              style={{ width: "50px", height: "50px" }}
+              style={{ width: "50px", height: "50px", cursor: "pointer" }}
               onClick={handleAddTodo}
             />
           </div>
@@ -233,7 +247,11 @@ function Todo() {
             </ul>
             <div className="todoList_items">
               <ul className="todoList_item">
-                {todos.length < 1 ? <p className="text-danger text-center">目前尚無待辦事項</p>: ''}
+                {todos.length < 1 ? (
+                  <p className="text-danger text-center">目前尚無待辦事項</p>
+                ) : (
+                  ""
+                )}
                 {showTodos.map((item) => (
                   <li key={item.id}>
                     <label className="todoList_label">
@@ -259,10 +277,22 @@ function Todo() {
                     </label>
                     <div className="d-flex">
                       <span onClick={() => openEdit(item)}>
-                        <MdEdit style={{ width: "20px", height: "20px" }} />
+                        <MdEdit
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            cursor: "pointer",
+                          }}
+                        />
                       </span>
                       <span onClick={() => handleDeleteTodo(item.id)}>
-                        <MdDelete style={{ width: "20px", height: "20px" }} />
+                        <MdDelete
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            cursor: "pointer",
+                          }}
+                        />
                       </span>
                     </div>
                   </li>
@@ -274,7 +304,9 @@ function Todo() {
                   {todos.filter((item) => item.status == false).length}{" "}
                   個待完成項目
                 </p>
-                <span onClick={handleCleatDone}>清除已完成項目</span>
+                <span style={{ cursor: "pointer" }} onClick={handleCleatDone}>
+                  清除已完成項目
+                </span>
               </div>
             </div>
           </div>

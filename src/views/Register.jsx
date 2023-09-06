@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 const { VITE_APP_HOST } = import.meta.env;
 
 const inputList = [
@@ -36,7 +36,7 @@ const inputList = [
 
 function Register() {
   const navigate = useNavigate();
-  const [errorMSG, setErrorMSG] = useState('');
+  const [errorMSG, setErrorMSG] = useState("");
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -48,7 +48,7 @@ function Register() {
   };
 
   const handleSignUp = () => {
-    setErrorMSG('');
+    setErrorMSG("");
     console.log(111, form);
     if (form.password != form.checkPassword) {
       setErrorMSG("密碼錯誤");
@@ -56,11 +56,15 @@ function Register() {
     }
     (async () => {
       try {
-        const {data} = await axios.post(`${VITE_APP_HOST}/users/sign_up`, form);
-        console.log(res);
-        navigate("/");
-        if(!data.status) {
-          setErrorMSG(data.message)
+        const { data } = await axios.post(
+          `${VITE_APP_HOST}/users/sign_up`,
+          form
+        );
+        if (!data.status) {
+          setErrorMSG(data.message);
+        } else {
+          alert("註冊成功");
+          navigate("/");
         }
       } catch (err) {
         console.log(err);
@@ -87,15 +91,18 @@ function Register() {
           />
         </div>
       ))}
-        <p id="err" className="text-danger">
-          {errorMSG}
-        </p>
+      <p id="err" className="text-danger">
+        {errorMSG}
+      </p>
       <input
         type="button"
-        value="Sign up"
-        className="formControls_btnSubmit"
+        value="註冊"
+        className="formControls_btnSubmit pe-auto"
         onClick={handleSignUp}
       />
+      <NavLink className="formControls_btnLink pe-auto" to="/">
+        登入
+      </NavLink>
     </form>
   );
 }
